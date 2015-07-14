@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+chown -R deploy:deploy /home/deploy/blog/current
+
+if [ ! -e /home/deploy/blog/current/tmp ]; then
+  su - deploy -c 'mkdir /home/deploy/blog/current/tmp'
+fi
+
+su - deploy -c 'ln -nfs /home/deploy/blog/shared/assets /home/deploy/blog/current/public/assets'
+su - deploy -c 'ln -nfs /home/deploy/blog/shared/bundle /home/deploy/blog/current/vendor/bundle'
+su - deploy -c 'rm -rf /home/deploy/blog/current/log ; ln -nfs /log/rails /home/deploy/blog/current/log'
+
+su - deploy -c 'cd /home/deploy/blog/current && bundle install --without development test --deployment --quiet'
+su - deploy -c 'cd /home/deploy/blog/current && bundle exec rake db:migrate'
+su - deploy -c 'cd /home/deploy/blog/current && bundle exec rake assets:precompile'
+
+# Run cron jobs only on workers, as webservers autoscale up and down.
+# ${SERVER_TYPE} is pre-populated for the deploy user by the build scripts
+# su - deploy -c 'if [ ${SERVER_TYPE} = "worker" ] ; then cd /home/deploy/blog/current && bundle exec whenever -w ; else echo not running whenever ; fi'

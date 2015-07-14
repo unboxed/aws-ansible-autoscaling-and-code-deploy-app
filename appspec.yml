@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: /home/deploy/blog/current
+
+hooks:
+  ApplicationStop:
+    - location: scripts/deregister_from_elb.sh
+      runas: root
+    - location: scripts/application_stop
+      runas: root
+  AfterInstall:
+    - location: scripts/after_install
+      runas: root
+  ApplicationStart:
+    - location: scripts/application_start
+      runas: root
+    - location: scripts/register_with_elb.sh
+      runas: root
