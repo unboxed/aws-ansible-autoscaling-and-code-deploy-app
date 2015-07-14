@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+# DEMO APP CUSTOMISATION:
+# Load environment variables immediately, so that we can store things like
+# SECRET_KEY_BASE and DATABASE_URL in the environment in all cases
+gem 'dotenv-rails', :require => 'dotenv/rails-now'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
