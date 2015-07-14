@@ -22,5 +22,12 @@ module Blog
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Use logstash formatted logs, so that they can be easily parsed by the
+    # CloudWatch Log Agent
+    config.lograge.enabled = true
+    config.logger = LogStashLogger.new(
+      uri: ENV.fetch('LOGSTASH_URI') { 'file://' + Rails.root.join('log', "#{Rails.env}.log").to_s }
+    )
   end
 end

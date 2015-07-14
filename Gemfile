@@ -47,5 +47,9 @@ end
 
 
 # DEMO APP CUSTOMISATION:
+# Use JSON formatted logs
+gem 'lograge'
+gem 'logstash-logger'
+
 # Use puma for our webserver
 gem 'puma'
