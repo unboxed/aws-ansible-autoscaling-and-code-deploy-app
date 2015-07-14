@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   encoding: utf8
   url: <%= ENV.fetch("DATABASE_URL") %>
-  pool: 5
+  pool: <%= ENV.fetch("WEB_CONCURRENCY_MAX_THREADS") { 16 } %>
 
 development:
   <<: *default

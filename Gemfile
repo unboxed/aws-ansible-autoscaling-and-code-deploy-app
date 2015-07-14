@@ -44,3 +44,8 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 end
 
+
+
+# DEMO APP CUSTOMISATION:
+# Use puma for our webserver
+gem 'puma'
